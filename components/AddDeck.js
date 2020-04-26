@@ -51,12 +51,6 @@ class AddDeck extends Component{
     }
 }
 
-// function mapStateToProps({navigation}){
-//     return{
-//         navigation
-//     }
-// }
-
 export default connect()(AddDeck)
 
 const styles = StyleSheet.create({

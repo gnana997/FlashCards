@@ -45,9 +45,7 @@ class Decks extends Component {
     Object.keys(state).map((key) => data.push({
         'title': key
     }))
-    console.log(state)
     if (isLoading) {
-      console.log('Loading')
       return <AppLoading />;
     }
     return (
