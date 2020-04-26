@@ -3,31 +3,34 @@ import { View, Text, TextInput, StyleSheet, TouchableOpacity, Platform } from "r
 import {submitDeck, getDecks, getDeck} from '../utils/api'
 import { connect } from "react-redux";
 import { white, purple, blue } from "../utils/colors";
-import { addEntry } from "../actions/index";
+import { receiveEntries, addEntry } from "../actions/index";
+import SubmitBtn from "./SubmitBtn";
 
-function SubmitBtn({onPress}){
-    return (
-        <TouchableOpacity
-         style ={Platform.OS === 'ios' ? styles.iosSubmitBtn : styles.androidSubmitBtn}
-         onPress = {onPress}>
-            <Text style = {styles.submitBtnText}>Submit</Text>
-        </TouchableOpacity>
-    )
-}
 
 class AddDeck extends Component{
     state = {
         key: ''
     }
+
+    convertArrayToObject = (array) => {
+        const initialValue = {};
+        return array.reduce((obj, item) => {
+          return {
+            ...obj,
+            ...item,
+          };
+        }, initialValue);
+    }
     
     submit = () => {
-        const {dispatch} = this.props
+        const {dispatch,navigation} = this.props
         const {key} = this.state
         submitDeck({key})
-        getDeck(key).then((res) => dispatch(addEntry(JSON.parse(res))))
+        getDeck(key).then((result)=> dispatch(receiveEntries((JSON.parse(result)))))
         this.setState({
             key: ''
         })
+        navigation.navigate('History')
     }
 
     render(){
@@ -47,6 +50,12 @@ class AddDeck extends Component{
         )
     }
 }
+
+// function mapStateToProps({navigation}){
+//     return{
+//         navigation
+//     }
+// }
 
 export default connect()(AddDeck)
 

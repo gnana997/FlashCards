@@ -1,4 +1,4 @@
-import { RECEIVE_DECKS, ADD_DECK, REMOVE_DECK } from "../actions/index";
+import { RECEIVE_DECKS, ADD_DECK, REMOVE_DECK, ADD_QUESTION } from "../actions/index";
 
 function entries(state = {}, action){
     switch(action.type){
@@ -21,6 +21,15 @@ function entries(state = {}, action){
                     console.log(result)
                     return result;
                 }, {})
+        case ADD_QUESTION:
+            return{
+                ...state,
+                [action.key]:{
+                    ...state[action.key],
+                    questions: state[action.key].questions.concat(action.entry)
+                }
+            }
+
         default:
             return state
     }

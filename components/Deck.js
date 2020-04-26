@@ -11,7 +11,7 @@ class Deck extends React.Component{
         const {deckId} = navigation.state.params
 
         return{
-            title: navigation.state.params ? deckId : 'chudo',
+            title: navigation.state.params ? deckId : 'Deck',
             headerTintColor: white,
             headerStyle:{
                 backgroundColor: purple 
@@ -29,7 +29,7 @@ class Deck extends React.Component{
     }
 
     render(){
-        const {deck} = this.props
+        const {deck,navigation} = this.props
         if(!deck){
             return (
                 <View>
@@ -46,10 +46,14 @@ class Deck extends React.Component{
                     <Text style ={styles.context}>{`${deck.questions.length} cards`}</Text>
                 </View>
                 <View style = {styles.buttonContainer}>
-                    <TouchableOpacity style = {Platform.OS === 'ios'? styles.iosSubmitBtn : styles.androidSubmitBtn}>
+                    <TouchableOpacity 
+                    onPress = {() => navigation.navigate('Question',{deckId: deck.title})}
+                    style = {Platform.OS === 'ios'? styles.iosSubmitBtn : styles.androidSubmitBtn}>
                         <Text style = {[styles.context, {color: white}]}>ADD Card</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style = {Platform.OS === 'ios'? styles.iosSubmitBtn : styles.androidSubmitBtn}>
+                    <TouchableOpacity 
+                    onPress = {() => navigation.navigate('Quiz',{deckId: deck.title})}
+                    style = {Platform.OS === 'ios'? styles.iosSubmitBtn : styles.androidSubmitBtn}>
                         <Text style = {[styles.context, {color: white}]}>Start Quiz</Text>
                     </TouchableOpacity>
                     <TouchableOpacity 

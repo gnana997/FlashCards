@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { StyleSheet, StatusBar , View, } from 'react-native';
 import { createStore } from 'redux'
 import { Provider } from 'react-redux'
@@ -12,6 +12,9 @@ import { purple, white } from "./utils/colors";
 import reducer from './reducers'
 import Constants from 'expo-constants'
 import Deck from './components/Deck';
+import Quiz from './components/Quiz';
+import Question from './components/Question';
+import { clearItems } from "./utils/api";
 
 function CustomStatusBar({backgroundColor, ...props}){
   const height = Constants.statusBarHeight
@@ -48,21 +51,30 @@ const Routes = createStackNavigator({
   },
   Deck:{
     screen: Deck
+  },
+  Quiz:{
+    screen: Quiz
+  },
+  Question:{
+    screen: Question
   }
 })
 
 const Home = createAppContainer(Routes)
 
 
-export default function App() {
-  return (
-    <Provider store = {createStore(reducer)}>
-      <View style = {styles.container}>
-        <CustomStatusBar backgroundColor = {purple} />
-        <Home />
-      </View>
-    </Provider>
-  );
+export default class App extends Component {
+
+  render(){
+    return (
+      <Provider store = {createStore(reducer,window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())}>
+        <View style = {styles.container}>
+          <CustomStatusBar backgroundColor = {purple} />
+          <Home />
+        </View>
+      </Provider>
+    );
+  }
 }
 
 const styles = StyleSheet.create({

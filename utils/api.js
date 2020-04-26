@@ -1,4 +1,5 @@
 import { AsyncStorage } from "react-native";
+import { exp } from "react-native-reanimated";
 
 export function submitDeck({key,questions=[]}){
     try{
@@ -24,13 +25,10 @@ export async function getDecks(){
     }
 }
 
-export async function getDeck(key){
-    const result = await AsyncStorage.getItem(key)
-    return result
-}
-
-export function clearItems(){
-    AsyncStorage.clear()
+export function getDeck(key){
+    return AsyncStorage.getItem(key,(err,result) => {
+            return result
+        })
 }
 
 export async function removeDeck(key){
@@ -40,4 +38,12 @@ export async function removeDeck(key){
     }catch(error){
         return false
     }
+}
+
+export function clearItems(){
+    AsyncStorage.clear()
+}
+
+export function mergeQuestion(key,entry){
+    AsyncStorage.mergeItem(key,JSON.stringify(entry))
 }
