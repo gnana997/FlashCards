@@ -4,9 +4,11 @@ import { white, purple, blue } from "../utils/colors";
 
 export default class SubmitBtn extends Component{
     render(){
+        const {disabled} = this.props
         return (
             <TouchableOpacity
-            style ={Platform.OS === 'ios' ? styles.iosSubmitBtn : styles.androidSubmitBtn}
+            disabled = {this.props.disabled}
+            style ={[Platform.OS === 'ios' ? styles.iosSubmitBtn : styles.androidSubmitBtn,(disabled && ({opacity: 0.5}))]}
             onPress = {this.props.onPress}>
                 <Text style = {styles.submitBtnText}>Submit</Text>
             </TouchableOpacity>

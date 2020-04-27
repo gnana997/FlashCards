@@ -47,7 +47,7 @@ class AddDeck extends Component{
                     </View>
                 </View>
                 <View style = {styles.buttonContainer}>
-                    <SubmitBtn onPress = {this.submit} />
+                    <SubmitBtn disabled = {(key.length === 0 ? true : false)} onPress = {this.submit} />
                 </View>
             </View>
         )
