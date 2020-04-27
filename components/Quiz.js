@@ -4,6 +4,10 @@ import { connect } from "react-redux";
 import { white,purple, gray, red, green } from "../utils/colors";
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import {Ionicons,Entypo} from '@expo/vector-icons'
+import {
+    clearLocalNotification,
+    setLocalNotification
+} from '../utils/helpers'
 
 
 class Quiz extends Component{
@@ -52,11 +56,26 @@ class Quiz extends Component{
             disabled: false,
             showAnswer: false
         }))
+        clearLocalNotification()
+        .then(setLocalNotification)
     }
 
+    restartQuiz =() => {
+        const {deck,navigation} = this.props
+        this.setState({
+            index: 0,
+            disabled: false,
+            showAnswer: false,
+            score: 0
+        })
+        navigation.navigate('Quiz',{
+            deckId: deck.title
+        })
+
+    }
 
     render(){
-        const {deck} = this.props
+        const {deck,navigation} = this.props
         const {index,showAnswer,disabled,score} = this.state
         if(deck.questions.length === 0){
             return (
@@ -70,10 +89,29 @@ class Quiz extends Component{
         if(index === deck.questions.length){
             return (
                 <View style = {styles.scoreContainer} >
-                    {score >= 1 ? <Ionicons name = 'md-happy' size = {100} /> : <Entypo name = 'emoji-sad' size = {100} />}
-                    <Text style = {styles.text}>
-                        {`You have answered ${score} out of ${deck.questions.length} correctly.`}
-                    </Text>
+                    <View>
+                        {score >= 1 ? <Ionicons name = 'md-happy' size = {100} /> : <Entypo name = 'emoji-sad' size = {100} />}
+                        <Text style = {styles.text}>
+                            {`You have answered ${score} out of ${deck.questions.length} correctly.`}
+                        </Text>
+                    </View>
+                    <View>
+                        <TouchableOpacity
+                                disabled = {disabled ? true : false}
+                                style ={[(Platform.OS === 'ios' ? styles.iosSubmitBtn : styles.androidSubmitBtn),(disabled && {backgroundColor: green})]}
+                                onPress = {this.restartQuiz}>
+                                    <Text style = {styles.submitBtnText}>Restart Quiz</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                                disabled = {disabled ? true : false}
+                                style ={[(Platform.OS === 'ios' ? styles.iosSubmitBtn : styles.androidSubmitBtn),(disabled && {backgroundColor: red})]}
+                                onPress = {() => navigation.navigate(
+                                    'Deck',
+                                    {deckId: deck.title}
+                                )}>
+                                    <Text style = {styles.submitBtnText}>Back To Deck</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
             )
         }

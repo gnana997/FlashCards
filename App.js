@@ -14,7 +14,7 @@ import Constants from 'expo-constants'
 import Deck from './components/Deck';
 import Quiz from './components/Quiz';
 import Question from './components/Question';
-import { clearItems } from "./utils/api";
+import { setLocalNotification } from './utils/helpers'
 
 function CustomStatusBar({backgroundColor, ...props}){
   const height = Constants.statusBarHeight
@@ -64,6 +64,10 @@ const Home = createAppContainer(Routes)
 
 
 export default class App extends Component {
+
+  componentDidMount(){
+    setLocalNotification()
+  }
 
   render(){
     return (

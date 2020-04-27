@@ -30,7 +30,10 @@ class AddDeck extends Component{
         this.setState({
             key: ''
         })
-        navigation.navigate('History')
+        navigation.navigate(
+            'Deck',
+            {deckId: key}
+        )
     }
 
     render(){
